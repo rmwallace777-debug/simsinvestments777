@@ -1,3 +1,4 @@
+import BuyButton from '@/components/BuyButton';
 import Link from 'next/link';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/Animations';
 import { Check, Star, ThumbsUp, TrendingUp, Shield, Search, Phone, Globe } from 'lucide-react';
@@ -174,16 +175,11 @@ export default function ReputationPricingPage() {
                   ))}
                 </ul>
 
-                <Link
-                  href="/free-audit"
-                  className={`block text-center py-3 px-6 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                    plan.popular
-                      ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-400 hover:to-amber-500'
-                      : 'border border-white/[0.1] text-slate-300 hover:bg-white/[0.05]'
-                  }`}
-                >
-                  {plan.cta}
-                </Link>
+                <BuyButton
+                  planId={`reputation-${plan.name.toLowerCase().replace('reputation ', '')}`}
+                  label={plan.cta}
+                  popular={plan.popular}
+                />
               </div>
             </StaggerItem>
           ))}
