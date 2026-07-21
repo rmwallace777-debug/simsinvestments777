@@ -39,6 +39,30 @@ export async function POST(request: NextRequest) {
     leads.push(lead);
     fs.writeFileSync(filePath, JSON.stringify(leads, null, 2));
 
+    // Forward to GHL webhook
+    try {
+      const ghlBody = {
+        firstName: (name || '').split(' ')[0],
+        lastName: (name || '').split(' ').slice(1).join(' '),
+        email,
+        company: businessName,
+        website,
+        city,
+        source: source || 'website',
+      };
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      await fetch('http://localhost:8080/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(ghlBody),
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+    } catch (err) {
+      // Webhook is optional - don't fail if server is down
+    }
+
     return NextResponse.json({ success: true, message: 'Lead captured successfully' });
   } catch (error) {
     console.error('Lead capture error:', error);
