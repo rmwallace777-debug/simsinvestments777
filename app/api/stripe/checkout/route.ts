@@ -3,36 +3,30 @@ import { NextRequest, NextResponse } from 'next/server';
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // Plan IDs mapping — Robert creates these in Stripe Dashboard
-const PLANS: Record<string, { price_id: string; name: string; amount: number }> = {
+const PLANS: Record<string, { price_id: string; name: string }> = {
   'reputation-starter': {
-    price_id: 'price_placeholder_starter',
+    price_id: 'price_1TvaI6AMjM6aPwDaP6kHqCy4',
     name: 'Reputation Starter',
-    amount: 29700,
   },
   'reputation-growth': {
-    price_id: 'price_placeholder_growth',
+    price_id: 'price_1TvaIfAMjM6aPwDaHrkn1i5Q',
     name: 'Reputation Growth',
-    amount: 69700,
   },
   'reputation-pro': {
-    price_id: 'price_placeholder_pro',
+    price_id: 'price_1TvaJ7AMjM6aPwDaE0EQSOF1',
     name: 'Reputation Pro',
-    amount: 149700,
   },
   'leadgen-starter': {
-    price_id: 'price_placeholder_leadgen_starter',
+    price_id: 'price_1TvaJVAMjM6aPwDa7B8RqY2v',
     name: 'Lead Generation Starter',
-    amount: 29700,
   },
   'leadgen-growth': {
-    price_id: 'price_placeholder_leadgen_growth',
+    price_id: 'price_1TvaJqAMjM6aPwDa88Nr3SOA',
     name: 'Lead Generation Growth',
-    amount: 69700,
   },
   'leadgen-pro': {
-    price_id: 'price_placeholder_leadgen_pro',
+    price_id: 'price_1TvaKAAMjM6aPwDadaGsA4od',
     name: 'Lead Generation Pro',
-    amount: 149700,
   },
 };
 
@@ -54,15 +48,7 @@ export async function POST(request: NextRequest) {
       payment_method_types: ['card'],
       line_items: [
         {
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: plan.name,
-              description: `${plan.name} — Monthly Subscription`,
-            },
-            unit_amount: plan.amount,
-            recurring: { interval: 'month' },
-          },
+          price: plan.price_id,
           quantity: 1,
         },
       ],
