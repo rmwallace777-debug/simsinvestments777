@@ -1,14 +1,71 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Link from 'next/link';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/Animations';
-import { Check, ArrowRight, HelpCircle } from 'lucide-react';
+import { Check, ArrowRight, HelpCircle, Star, TrendingUp, Globe, Search } from 'lucide-react';
 import type { Metadata } from 'next';
+import BuyButton from '@/components/BuyButton';
 
 export const metadata: Metadata = {
   title: 'Pricing',
-  description: 'Simple, transparent pricing for B2B lead generation and Google review management. Plans start at $297/month. No hidden fees, cancel anytime.',
+  description: 'Simple, transparent pricing for B2B lead generation and reputation management. Plans start at $297/month. No hidden fees, cancel anytime.',
 };
 
-const plans = [
+const repPlans = [
+  {
+    name: 'Reputation Starter',
+    price: '$297',
+    period: '/month',
+    description: 'Build a strong online foundation. Perfect for businesses that need more reviews and a complete Google profile.',
+    features: [
+      'Review generation campaigns — 15-30 new reviews/month',
+      'Google Business Profile optimization',
+      'AI-powered review response management',
+      'SMS-enabled business number setup',
+      'Weekly reputation monitoring & alerts',
+      'Monthly reputation score report',
+      'Email support',
+    ],
+    cta: 'Fix My Reputation',
+    popular: false,
+  },
+  {
+    name: 'Reputation Growth',
+    price: '$697',
+    period: '/month',
+    description: 'Everything in Starter plus directory cleanup and tech stack setup. Ready to dominate local search.',
+    features: [
+      'Everything in Reputation Starter',
+      'Directory listing cleanup & monitoring (15+ platforms)',
+      'Website tech stack setup (Analytics, Pixel, GTM)',
+      'Competitor reputation tracking',
+      'Review response management for all platforms',
+      'Priority email + phone support',
+      'Monthly strategy review',
+    ],
+    cta: 'Most Popular',
+    popular: true,
+  },
+  {
+    name: 'Reputation Pro',
+    price: '$1,497',
+    period: '/month',
+    description: 'Full-service partnership. We manage your entire online presence so you can focus on running your business.',
+    features: [
+      'Everything in Reputation Growth',
+      'AI phone agent for automated review requests',
+      'Custom reputation landing page',
+      'Google Ads & Meta Pixel conversion tracking',
+      'Lead generation add-on included',
+      'Real-time reputation dashboard',
+      'Dedicated account manager',
+      'Same-day priority support',
+    ],
+    cta: 'Go Pro',
+    popular: false,
+  },
+];
+
+const leadPlans = [
   {
     name: 'Starter',
     price: '$297',
@@ -29,14 +86,12 @@ const plans = [
     name: 'Growth',
     price: '$697',
     period: '/month',
-    description: 'For growing businesses ready to scale their pipeline and reputation.',
+    description: 'For growing businesses ready to scale their pipeline.',
     features: [
       '100 qualified B2B leads/month',
       'Deep prospect research',
       'Email + LinkedIn outreach',
-      'Review generation campaigns',
-      'Review response management',
-      'Weekly pipeline + review reports',
+      'Weekly pipeline reports',
       '2 strategy calls/month',
       'Priority email + phone support',
     ],
@@ -52,8 +107,6 @@ const plans = [
       '200+ qualified B2B leads/month',
       'Premium prospect research',
       'Email + LinkedIn + phone outreach',
-      'Comprehensive review management',
-      'Competitor monitoring & analysis',
       'Real-time dashboard access',
       'Weekly strategy calls',
       'Dedicated account manager',
@@ -70,24 +123,24 @@ const faqs = [
     a: 'Yes. All plans are month-to-month with no long-term contracts. Cancel anytime with 30 days notice.',
   },
   {
-    q: 'What industries do you serve?',
-    a: 'We specialize in B2B service businesses: plumbing, HVAC, roofing, construction, dental, medical, legal, and professional services throughout Texas.',
+    q: 'Which service should I start with?',
+    a: 'If you need more reviews and a better online presence, start with Reputation Management. If you need a steady flow of new customer leads, start with Lead Generation. Many clients combine both — our Growth and Pro plans are designed for that.',
   },
   {
     q: 'How long until I see results?',
-    a: 'Most clients see their first qualified leads within 2-3 weeks. Review management results typically show within 30-60 days as new reviews accumulate.',
+    a: 'Reputation management: first new reviews within 2 weeks, measurable improvement in 30-60 days. Lead generation: first qualified leads within 2-3 weeks.',
   },
   {
     q: 'Can I combine both services?',
-    a: 'Absolutely. We recommend combining lead generation with review management for maximum impact. Our Growth plan includes both services.',
+    a: 'Absolutely. Many clients combine reputation management with lead generation for maximum impact. Our Reputation Pro plan includes lead generation capabilities.',
   },
   {
     q: 'Is there a setup fee?',
-    a: 'No setup fees. Your first month covers onboarding and campaign setup. We are transparent about our pricing.',
+    a: 'No setup fees. Your first month covers onboarding and campaign setup.',
   },
   {
     q: 'What if I am not satisfied?',
-    a: 'Your satisfaction is guaranteed. If you are not seeing results after 60 days, we will work with you to adjust the strategy or part ways — no hard feelings.',
+    a: 'Your satisfaction is guaranteed. If you are not seeing results after 60 days, we will adjust the strategy or part ways — no hard feelings.',
   },
 ];
 
@@ -101,52 +154,112 @@ export default function PricingPage() {
             Simple, Transparent <span className="gradient-text">Pricing</span>
           </h1>
           <p className="text-lg text-slate-400 leading-relaxed">
-            No hidden fees. No long-term contracts. Just results-driven growth services that scale with your business.
+            Two services. One goal: growing your business. Pick the service that fits your needs, or combine both for maximum impact.
           </p>
         </FadeIn>
+      </section>
 
-        {/* Pricing Tiers */}
-        <StaggerContainer className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {plans.map((plan) => (
-            <StaggerItem key={plan.name}>
-              <div className={`glass-card rounded-2xl p-8 relative ${plan.popular ? 'border-teal-500/40 teal-glow' : ''}`}>
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-teal-500 to-teal-600 rounded-full text-xs font-semibold text-white">
-                    Most Popular
+      {/* Tabbed Pricing */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <Tabs defaultValue="reputation" className="max-w-5xl mx-auto">
+          <div className="flex justify-center mb-10">
+            <TabsList className="bg-white/[0.04] border border-white/[0.06] p-1 rounded-xl">
+              <TabsTrigger
+                value="reputation"
+                className="px-6 py-2.5 text-sm font-medium rounded-lg data-[state=active]:bg-amber-500/20 data-[state=active]:text-amber-400 data-[state=inactive]:text-slate-400 transition-all"
+              >
+                <Star className="w-4 h-4 mr-2 inline-block" />
+                Reputation Management
+              </TabsTrigger>
+              <TabsTrigger
+                value="leads"
+                className="px-6 py-2.5 text-sm font-medium rounded-lg data-[state=active]:bg-teal-500/20 data-[state=active]:text-teal-400 data-[state=inactive]:text-slate-400 transition-all"
+              >
+                <TrendingUp className="w-4 h-4 mr-2 inline-block" />
+                B2B Lead Generation
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          <TabsContent value="reputation">
+            <StaggerContainer className="grid md:grid-cols-3 gap-6">
+              {repPlans.map((plan) => (
+                <StaggerItem key={plan.name}>
+                  <div className={`glass-card rounded-2xl p-8 relative ${plan.popular ? 'border-amber-500/40 amber-glow' : ''}`}>
+                    {plan.popular && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-amber-500 to-amber-600 rounded-full text-xs font-semibold text-white">
+                        Most Popular
+                      </div>
+                    )}
+                    <div className="mb-6">
+                      <h3 className="text-xl font-bold text-white mb-1">{plan.name}</h3>
+                      <p className="text-sm text-slate-400 mb-4">{plan.description}</p>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-4xl font-bold text-white">{plan.price}</span>
+                        <span className="text-slate-500">{plan.period}</span>
+                      </div>
+                    </div>
+                    <ul className="space-y-3 mb-8">
+                      {plan.features.map((f) => (
+                        <li key={f} className="flex items-start gap-3 text-sm">
+                          <Check className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
+                          <span className="text-slate-300">{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <BuyButton
+                      planId={`reputation-${plan.name.toLowerCase().replace('reputation ', '')}`}
+                      label={plan.cta}
+                      popular={plan.popular}
+                    />
                   </div>
-                )}
-                <div className="mb-6">
-                  <h3 className="text-xl font-bold text-white mb-1">{plan.name}</h3>
-                  <p className="text-sm text-slate-400 mb-4">{plan.description}</p>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-white">{plan.price}</span>
-                    <span className="text-slate-500">{plan.period}</span>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </TabsContent>
+
+          <TabsContent value="leads">
+            <StaggerContainer className="grid md:grid-cols-3 gap-6">
+              {leadPlans.map((plan) => (
+                <StaggerItem key={plan.name}>
+                  <div className={`glass-card rounded-2xl p-8 relative ${plan.popular ? 'border-teal-500/40 teal-glow' : ''}`}>
+                    {plan.popular && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-teal-500 to-teal-600 rounded-full text-xs font-semibold text-white">
+                        Most Popular
+                      </div>
+                    )}
+                    <div className="mb-6">
+                      <h3 className="text-xl font-bold text-white mb-1">{plan.name}</h3>
+                      <p className="text-sm text-slate-400 mb-4">{plan.description}</p>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-4xl font-bold text-white">{plan.price}</span>
+                        <span className="text-slate-500">{plan.period}</span>
+                      </div>
+                    </div>
+                    <ul className="space-y-3 mb-8">
+                      {plan.features.map((f) => (
+                        <li key={f} className="flex items-start gap-3 text-sm">
+                          <Check className="w-4 h-4 text-teal-400 mt-0.5 flex-shrink-0" />
+                          <span className="text-slate-300">{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      href="/free-audit"
+                      className={`block text-center py-3 px-6 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                        plan.popular
+                          ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:from-teal-400 hover:to-teal-500 teal-glow'
+                          : 'border border-white/[0.1] text-slate-300 hover:bg-white/[0.05]'
+                      }`}
+                    >
+                      {plan.cta}
+                    </Link>
                   </div>
-                </div>
-
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3 text-sm">
-                      <Check className="w-4 h-4 text-teal-400 mt-0.5 flex-shrink-0" />
-                      <span className="text-slate-300">{f}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  href="/free-audit"
-                  className={`block text-center py-3 px-6 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                    plan.popular
-                      ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:from-teal-400 hover:to-teal-500 teal-glow'
-                      : 'border border-white/[0.1] text-slate-300 hover:bg-white/[0.05]'
-                  }`}
-                >
-                  {plan.cta}
-                </Link>
-              </div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </TabsContent>
+        </Tabs>
       </section>
 
       {/* Fix Guide Section */}
@@ -162,35 +275,12 @@ export default function PricingPage() {
         <FadeIn className="text-center">
           <Link
             href="/fix-guide"
-            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl hover:from-teal-400 hover:to-teal-500 transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl hover:from-amber-400 hover:to-amber-500 transition-all"
           >
             See Everything We Fix
             <ArrowRight className="w-4 h-4" />
           </Link>
         </FadeIn>
-      </section>
-
-      {/* Add-ons */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        <FadeIn className="text-center mb-10">
-          <h2 className="text-2xl font-bold text-white mb-2">Add-On Services</h2>
-          <p className="text-slate-400">Enhance your plan with these optional add-ons.</p>
-        </FadeIn>
-        <StaggerContainer className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {[
-            { title: 'Competitor Analysis', price: '$149/mo', desc: 'Monthly deep-dive into competitor strategies, reviews, and market positioning.' },
-            { title: 'Content Marketing', price: '$497/mo', desc: 'Blog posts, social media content, and email newsletters to attract organic leads.' },
-            { title: 'Ad Management', price: '$397/mo', desc: 'Google Ads and social media ad management to supplement organic lead generation.' },
-          ].map((addon) => (
-            <StaggerItem key={addon.title}>
-              <div className="glass-card rounded-xl p-6 text-center">
-                <h3 className="text-white font-semibold mb-1">{addon.title}</h3>
-                <p className="text-teal-400 font-bold text-lg mb-2">{addon.price}</p>
-                <p className="text-sm text-slate-400">{addon.desc}</p>
-              </div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
       </section>
 
       {/* FAQ */}
@@ -217,13 +307,13 @@ export default function PricingPage() {
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <FadeIn>
           <div className="glass-card rounded-3xl p-12">
-            <h2 className="text-2xl font-bold text-white mb-4">Still Have Questions?</h2>
-            <p className="text-slate-400 mb-8">Book a free strategy call and we will help you find the perfect plan.</p>
+            <h2 className="text-2xl font-bold text-white mb-4">Start With a Free Audit</h2>
+            <p className="text-slate-400 mb-8">Not sure which service fits? We will analyze your online presence and recommend the right plan — no obligation.</p>
             <Link
               href="/free-audit"
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl hover:from-teal-400 hover:to-teal-500 transition-all"
+              className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl hover:from-amber-400 hover:to-amber-500 transition-all"
             >
-              Book a Strategy Call
+              Get Your Free Audit
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
