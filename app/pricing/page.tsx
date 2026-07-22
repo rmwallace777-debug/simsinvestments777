@@ -149,6 +149,27 @@ export default function PricingPage() {
         </StaggerContainer>
       </section>
 
+      {/* Fix Guide Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <FadeIn className="text-center mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">Not Sure What You Need?</h2>
+          <p className="text-slate-400 max-w-2xl mx-auto">
+            We run a free digital audit that checks <strong className="text-white">5 categories</strong> with 
+            <strong className="text-white"> 12+ issues</strong>. Our fix guide shows exactly what we find 
+            and which plan fixes each issue — no guesswork, no upsells.
+          </p>
+        </FadeIn>
+        <FadeIn className="text-center">
+          <Link
+            href="/fix-guide"
+            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl hover:from-teal-400 hover:to-teal-500 transition-all"
+          >
+            See Everything We Fix
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </FadeIn>
+      </section>
+
       {/* Add-ons */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
         <FadeIn className="text-center mb-10">

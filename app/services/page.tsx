@@ -202,6 +202,24 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* Fix Guide Link */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <FadeIn className="text-center max-w-2xl mx-auto">
+          <h2 className="text-2xl font-bold text-white mb-4">Every Issue Has a Fix</h2>
+          <p className="text-slate-400 mb-6">
+            Our free audit checks 5 categories of your online presence. See exactly what we look for,
+            what each issue costs you, and how we fix it at every plan level.
+          </p>
+          <Link
+            href="/fix-guide"
+            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl hover:from-teal-400 hover:to-teal-500 transition-all"
+          >
+            View Complete Fix Guide
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </FadeIn>
+      </section>
+
       {/* Pricing Anchor */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <FadeIn>

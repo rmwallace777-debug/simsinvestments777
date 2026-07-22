@@ -1,7 +1,7 @@
 import BuyButton from '@/components/BuyButton';
 import Link from 'next/link';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/Animations';
-import { Check, Star, ThumbsUp, TrendingUp, Shield, Search, Phone, Globe } from 'lucide-react';
+import { Check, Star, ThumbsUp, TrendingUp, Shield, Search, Phone, Globe, ArrowRight } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -208,6 +208,23 @@ export default function ReputationPricingPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Fix Guide Link */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <FadeIn className="text-center max-w-2xl mx-auto">
+          <h2 className="text-xl font-bold text-white mb-4">Every Issue We Check — And How We Fix It</h2>
+          <p className="text-slate-400 mb-6">
+            Our complete fix guide breaks down every audit issue with the exact fix and which plan includes it.
+          </p>
+          <Link
+            href="/fix-guide"
+            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl hover:from-amber-400 hover:to-amber-500 transition-all"
+          >
+            See the Fix Guide
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </FadeIn>
       </section>
 
       {/* FAQ */}
