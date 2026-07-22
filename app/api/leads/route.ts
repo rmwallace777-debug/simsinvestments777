@@ -16,39 +16,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Store lead locally
-    const leadsDir = path.join(process.cwd(), 'data');
-    if (!fs.existsSync(leadsDir)) {
-      fs.mkdirSync(leadsDir, { recursive: true });
-    }
+    // Store lead locally (best-effort on Vercel)
+    try {
+      const leadsDir = path.join(process.cwd(), 'data');
+      if (!fs.existsSync(leadsDir)) fs.mkdirSync(leadsDir, { recursive: true });
+      const lead = { name, email, businessName, website: website || '', city: city || '', source: source || 'website', timestamp: new Date().toISOString() };
+      const filePath = path.join(leadsDir, 'leads.json');
+      let leads: any[] = [];
+      if (fs.existsSync(filePath)) {
+        try { leads = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch {}
+      }
+      leads.push(lead);
+      fs.writeFileSync(filePath, JSON.stringify(leads, null, 2));
+    } catch {}
 
-    const lead = {
-      name, email, businessName,
-      website: website || '',
-      city: city || '',
-      source: source || 'website',
-      timestamp: new Date().toISOString(),
-    };
-
-    const filePath = path.join(leadsDir, 'leads.json');
-    let leads: any[] = [];
-    if (fs.existsSync(filePath)) {
-      try {
-        const content = fs.readFileSync(filePath, 'utf-8');
-        leads = JSON.parse(content);
-      } catch {}
-    }
-    leads.push(lead);
-    fs.writeFileSync(filePath, JSON.stringify(leads, null, 2));
-
-    // Create contact in GHL directly
-    let ghlCreated = false;
+    // Try GHL first
     if (GHL_TOKEN) {
       try {
         const firstName = (name || '').split(' ')[0] || 'Lead';
         const lastName = (name || '').split(' ').slice(1).join(' ') || '';
-
-        const ghlResponse = await fetch(`${GHL_API}/contacts/`, {
+        const ghlRes = await fetch(`${GHL_API}/contacts/`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${GHL_TOKEN}`,
@@ -58,68 +45,46 @@ export async function POST(request: NextRequest) {
           },
           body: JSON.stringify({
             locationId: GHL_LOCATION,
-            firstName,
-            lastName,
-            email,
+            firstName, lastName, email,
             companyName: businessName,
             tags: ['audit-campaign', 'website-lead'],
-            customFields: [
-              { key: 'contact.audit_score', field_value: 'Pending' },
-            ],
+            customFields: [{ key: 'contact.audit_score', field_value: 'Pending' }],
             source: 'website',
             city: city || '',
           }),
         });
-
-        if (ghlResponse.ok) {
-          ghlCreated = true;
-        } else {
-          const errText = await ghlResponse.text();
-          console.error('GHL create contact failed:', errText);
+        if (ghlRes.ok) {
+          return NextResponse.json({ success: true, message: 'Lead captured in GHL', ghl_connected: true });
         }
+        // GHL failed — fall through to email
       } catch (err) {
-        console.error('GHL API error:', err);
+        console.error('GHL error:', err);
       }
     }
 
-    // If GHL isn't available, send email notification
-    if (!ghlCreated) {
-      try {
+    // Fallback: email notification
+    try {
+      const emailPass = process.env.EMAIL_PASS;
+      if (emailPass) {
         const transporter = nodemailer.createTransport({
           host: 'mail.privateemail.com',
           port: 587,
           secure: false,
-          auth: {
-            user: 'robert@simsinvestments777.com',
-            pass: process.env.EMAIL_PASS || '',
-          },
+          auth: { user: 'robert@simsinvestments777.com', pass: emailPass },
         });
-
         await transporter.sendMail({
           from: '"Sims Website" <robert@simsinvestments777.com>',
           to: 'robert@simsinvestments777.com',
           subject: `New Lead: ${name} — ${businessName}`,
-          html: `
-            <h2>New Website Lead</h2>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Business:</strong> ${businessName}</p>
-            <p><strong>Website:</strong> ${website || 'N/A'}</p>
-            <p><strong>City:</strong> ${city || 'N/A'}</p>
-            <p><strong>Source:</strong> ${source}</p>
-            <p><strong>Time:</strong> ${lead.timestamp}</p>
-          `,
+          html: `<h2>New Lead</h2><p><b>Name:</b> ${name}</p><p><b>Email:</b> ${email}</p><p><b>Business:</b> ${businessName}</p><p><b>City:</b> ${city || 'N/A'}</p>`,
         });
-      } catch (emailErr) {
-        console.error('Email notification failed:', emailErr);
+        return NextResponse.json({ success: true, message: 'Lead captured via email', ghl_connected: false });
       }
+    } catch (err) {
+      console.error('Email error:', err);
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Lead captured successfully',
-      ghl_connected: ghlCreated,
-    });
+    return NextResponse.json({ success: true, message: 'Lead saved locally', ghl_connected: false });
   } catch (error) {
     console.error('Lead capture error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
