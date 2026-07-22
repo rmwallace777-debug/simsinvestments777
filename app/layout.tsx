@@ -82,7 +82,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               email: 'robert@simsinvestments777.com',
               address: {
                 '@type': 'PostalAddress',
-                streetAddress: '',
                 addressLocality: 'Paris',
                 addressRegion: 'TX',
                 postalCode: '75460',
@@ -94,7 +93,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               },
               priceRange: '$297 - $1,497',
               image: `${siteUrl}/og-image.png`,
-              sameAs: ['https://twitter.com/simsinvestments', 'https://linkedin.com/company/simsinvestments'],
+              openingHours: 'Mo-Fr 09:00-17:00',
+              areaServed: [
+                { '@type': 'City', name: 'Paris' },
+                { '@type': 'State', name: 'Texas' },
+              ],
             }),
           }}
         />
@@ -113,6 +116,31 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 telephone: '+19034445555',
                 contactType: 'sales',
                 email: 'robert@simsinvestments777.com',
+                availableLanguage: ['English'],
+              },
+              sameAs: [
+                'https://twitter.com/simsinvestments',
+                'https://linkedin.com/company/simsinvestments',
+              ],
+            }),
+          }}
+        />
+        {/* WebSite schema with search */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'Sims Investment Management',
+              url: siteUrl,
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: {
+                  '@type': 'EntryPoint',
+                  urlTemplate: `${siteUrl}/search?q={search_term_string}`,
+                },
+                'query-input': 'required name=search_term_string',
               },
             }),
           }}

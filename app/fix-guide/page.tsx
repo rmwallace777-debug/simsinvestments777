@@ -12,6 +12,53 @@ export const metadata: Metadata = {
   description: 'Every issue our free audit finds and exactly how we fix each one. See how your plan maps to real results.',
 };
 
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What does a digital audit check?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Our digital audit checks 5 categories: Business Details (SMS, hosting, chat, review replies), Techno Stack (Analytics, Tag Manager, Ads tracking, Pixel), Google Business Profile (photos, hours, services, Q&A), Directory Listings (NAP consistency across 15+ platforms), and Reputation & Reviews (volume, sentiment, response rate).',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How much does reputation management cost?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Our plans start at $297/month for the Starter plan (review management, GBP optimization, SMS setup), $697/month for Growth (adds analytics, directory cleanup, competitor tracking), and $1,497/month for Pro (adds chat widget, ad tracking, AI phone agent).',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How long does it take to see results?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Most clients see improvements within 30 days. Review volume typically increases 2-3x in the first month. SEO improvements from GBP optimization and directory cleanup show results in 60-90 days.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Why do most businesses score 35%?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Most service businesses haven\'t had time to focus on their online presence. Common issues include: no SMS-enabled phone (90% of businesses), no reply to reviews (95%), no Google Analytics (65%), inconsistent directory listings (85%), and incomplete Google Business Profiles (80%).',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Do I need the Pro plan to start?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. The Starter plan ($297/month) covers the highest-impact fixes: review management, Google Business Profile optimization, and SMS number setup. You can upgrade as your needs grow.',
+      },
+    },
+  ],
+};
+
 const issueCategories = [
   {
     id: 'business-details',
@@ -174,6 +221,12 @@ const planColors = {
 export default function FixGuidePage() {
   return (
     <div className="pt-24 pb-16">
+      {/* FAQ Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      
       {/* Header */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
         <FadeIn className="text-center max-w-3xl mx-auto mb-12">
