@@ -7,7 +7,7 @@ const GHL_API = 'https://services.leadconnectorhq.com';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, businessName, website, city, source } = body;
+    const { name, email, businessName, website, phone, city, source } = body;
 
     if (!name || !email || !businessName) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -28,7 +28,9 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({
           locationId: GHL_LOCATION,
           firstName, lastName, email,
+          phone: phone || '',
           companyName: businessName,
+          website: website || '',
           tags: ['audit-campaign', 'website-lead'],
           customFields: [{ key: 'contact.audit_score', field_value: 'Pending' }],
           source: 'website',
