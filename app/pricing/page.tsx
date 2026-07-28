@@ -244,16 +244,11 @@ export default function PricingPage() {
                         </li>
                       ))}
                     </ul>
-                    <Link
-                      href="/free-audit"
-                      className={`block text-center py-3 px-6 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                        plan.popular
-                          ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:from-teal-400 hover:to-teal-500 teal-glow'
-                          : 'border border-white/[0.1] text-slate-300 hover:bg-white/[0.05]'
-                      }`}
-                    >
-                      {plan.cta}
-                    </Link>
+                    <BuyButton
+                      planId={`leadgen-${plan.name.toLowerCase().replace('leadgen ', '')}`}
+                      label={plan.cta}
+                      popular={plan.popular}
+                    />
                   </div>
                 </StaggerItem>
               ))}
