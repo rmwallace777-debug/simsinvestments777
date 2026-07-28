@@ -154,9 +154,9 @@ export default async function BlogPostPage({ params }: Props) {
             <div className="sticky top-24 space-y-6">
               {/* Lead Capture */}
               <div className="glass-card rounded-2xl p-6">
-                <h3 className="text-white font-semibold mb-1">Get 5 Free Leads</h3>
+                <h3 className="text-white font-semibold mb-1">Get Your Free Digital Audit</h3>
                 <p className="text-xs text-slate-400 mb-4">
-                  Enter your info and we will send you 5 verified B2B leads in your area.
+                  We analyze your online presence and show you what is working and what is missing. Free report.
                 </p>
                 <AuditForm source={`blog-post-${slug}`} />
               </div>
