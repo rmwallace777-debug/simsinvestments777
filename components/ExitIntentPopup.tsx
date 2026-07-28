@@ -65,12 +65,12 @@ export default function ExitIntentPopup() {
             <div className="text-center mb-6">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center mx-auto mb-4">
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Wait! Get 5 Free Leads</h3>
+              <h3 className="text-xl font-bold text-white mb-2">Get Your Free Digital Audit</h3>
               <p className="text-sm text-slate-400">
-                Enter your email and we&apos;ll send you 5 verified B2B leads in your area — completely free.
+                See your online reputation score and find out how you stack up against competitors in your area.
               </p>
             </div>
 
@@ -91,7 +91,7 @@ export default function ExitIntentPopup() {
                     source: 'exit-intent-popup',
                   }),
                 });
-                form.innerHTML = '<p class="text-teal-400 text-center font-medium">Check your inbox for your free leads! 🎉</p>';
+                form.innerHTML = '<p class="text-teal-400 text-center font-medium">Your free audit is on the way! 🎉</p>';
                 setTimeout(dismiss, 2000);
               }}
               className="space-y-3"
@@ -128,7 +128,7 @@ export default function ExitIntentPopup() {
                 type="submit"
                 className="w-full px-5 py-3 text-sm font-medium text-white bg-gradient-to-r from-teal-500 to-teal-600 rounded-lg hover:from-teal-400 hover:to-teal-500 teal-glow transition-all duration-200"
               >
-                Send My Free Leads
+                Send My Free Audit
               </button>
               <p className="text-xs text-slate-500 text-center">No spam. Unsubscribe anytime.</p>
             </form>
