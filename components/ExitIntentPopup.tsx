@@ -86,7 +86,7 @@ export default function ExitIntentPopup() {
                     name: formData.get('name'),
                     email: formData.get('email'),
                     businessName: formData.get('businessName'),
-                    website: '',
+                    website: formData.get('website') || '',
                     city: formData.get('city'),
                     source: 'exit-intent-popup',
                   }),
@@ -122,6 +122,12 @@ export default function ExitIntentPopup() {
                 name="city"
                 placeholder="Your City"
                 required
+                className="w-full px-4 py-2.5 bg-navy-800 border border-white/[0.08] rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-teal-500 text-sm"
+              />
+              <input
+                type="url"
+                name="website"
+                placeholder="https://yourbusiness.com"
                 className="w-full px-4 py-2.5 bg-navy-800 border border-white/[0.08] rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-teal-500 text-sm"
               />
               <button
