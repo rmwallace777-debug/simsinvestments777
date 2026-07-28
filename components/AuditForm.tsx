@@ -1,10 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-
 export default function AuditForm({ source = 'free-audit' }: { source?: string }) {
-  const [submitted, setSubmitted] = useState(false);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
@@ -21,24 +17,9 @@ export default function AuditForm({ source = 'free-audit' }: { source?: string }
         source,
       }),
     });
-    setSubmitted(true);
+    // Redirect to thank-you page for Google Ads conversion tracking
+    window.location.href = '/thank-you';
   };
-
-  if (submitted) {
-    return (
-      <div className="text-center p-8 glass-card rounded-2xl">
-        <div className="w-16 h-16 rounded-full bg-teal-500/20 flex items-center justify-center mx-auto mb-4">
-          <svg className="w-8 h-8 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <h3 className="text-xl font-bold text-white mb-2">You&apos;re on the list!</h3>
-        <p className="text-slate-400">
-          Check your inbox — your free pipeline audit is on its way. We&apos;ll review your current lead generation setup and send personalized recommendations within 24 hours.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -115,7 +96,7 @@ export default function AuditForm({ source = 'free-audit' }: { source?: string }
           type="submit"
           className="w-full px-6 py-3.5 text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl hover:from-teal-400 hover:to-teal-500 teal-glow transition-all duration-200"
         >
-          Get Your Free Pipeline Audit
+          Get Your Free Audit
         </button>
         <p className="text-xs text-slate-500 text-center mt-3">
           No spam. Your information is safe with us.
