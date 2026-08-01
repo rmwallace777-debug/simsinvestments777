@@ -92,6 +92,10 @@ export default function AuditForm({ source = 'free-audit' }: { source?: string }
         </div>
       </div>
       <div className="pt-2">
+        <p className="text-xs text-slate-400 mb-3">
+          By submitting, you agree to receive SMS messages about your free audit from Sims Investment
+          Management Services, LLC. Msg &amp; data rates may apply. Reply STOP to opt out at any time.
+        </p>
         <button
           type="submit"
           className="w-full px-6 py-3.5 text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl hover:from-teal-400 hover:to-teal-500 teal-glow transition-all duration-200"

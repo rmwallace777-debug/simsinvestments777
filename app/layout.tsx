@@ -151,6 +151,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <ExitIntentPopup />
         <GoogleAnalytics />
+        {/* GoHighLevel chat widget (SMS opt-in consent point) */}
+        <script
+          src="https://widgets.leadconnectorhq.com/loader.js"
+          data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+          data-widget-id="6a6e5993f84104f9437376af"
+          data-source="WEB_USER"
+        />
       </body>
     </html>
   );
