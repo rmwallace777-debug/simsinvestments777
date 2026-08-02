@@ -29,6 +29,7 @@ export async function POST(request: NextRequest) {
       const session = event.data.object;
       const metadata = session.metadata || {};
       const customerEmail = session.customer_details?.email || session.customer_email || '';
+      const customerPhone = session.customer_details?.phone || '';
 
       console.log(`✅ Payment completed: ${metadata.planName} — ${customerEmail}`);
 
@@ -49,6 +50,7 @@ export async function POST(request: NextRequest) {
           const ghlBody = {
             locationId: GHL_LOCATION,
             email: customerEmail,
+            phone: customerPhone,
             firstName: (metadata.customerName || '').split(' ')[0] || 'New',
             lastName: (metadata.customerName || '').split(' ').slice(1).join(' ') || 'Customer',
             companyName: metadata.businessName || '',

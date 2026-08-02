@@ -53,6 +53,7 @@ export async function POST(request: NextRequest) {
         },
       ],
       customer_email: customerEmail,
+      phone_number_collection: { enabled: true },
       metadata: {
         planId,
         planName: plan.name,
