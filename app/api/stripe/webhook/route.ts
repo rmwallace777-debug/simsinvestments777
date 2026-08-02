@@ -35,13 +35,24 @@ export async function POST(request: NextRequest) {
       // Create/update contact in GHL
       if (GHL_TOKEN && customerEmail) {
         try {
+          // Bridge: plan → delivery trigger tags so service workflows auto-fire
+          // Reputation plans start the review campaign; Lead Gen plans start client intake
+          const planId = metadata.planId || '';
+          const deliveryTags: string[] = [];
+          if (planId.startsWith('reputation')) {
+            deliveryTags.push('review-campaign-active');
+          } else if (planId.startsWith('leadgen')) {
+            deliveryTags.push('leadgen-client');
+          }
+          console.log(`🎯 Delivery bridge tags for ${planId}: ${deliveryTags.join(', ') || '(none)'}`);
+
           const ghlBody = {
             locationId: GHL_LOCATION,
             email: customerEmail,
             firstName: (metadata.customerName || '').split(' ')[0] || 'New',
             lastName: (metadata.customerName || '').split(' ').slice(1).join(' ') || 'Customer',
             companyName: metadata.businessName || '',
-            tags: ['paying-client', metadata.planId || ''],
+            tags: ['paying-client', planId, ...deliveryTags].filter(Boolean),
             customFields: [
               { key: 'contact.plan', field_value: metadata.planName || '' },
               { key: 'contact.stripe_customer_id', field_value: session.customer || '' },
