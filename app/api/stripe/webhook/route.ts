@@ -6,6 +6,25 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const GHL_TOKEN = process.env.GHL_API_TOKEN || '';
 const GHL_LOCATION = '3hM1yVflAe1LZ75pZJIs';
 
+// Price ID → planId (covers site checkout AND Stripe payment links, which carry no metadata)
+const PRICE_TO_PLAN: Record<string, { planId: string; planName: string }> = {
+  price_1TvaI6AMjM6aPwDaP6kHqCy4: { planId: 'reputation-starter', planName: 'Reputation Starter' },
+  price_1TvaIfAMjM6aPwDaHrkn1i5Q: { planId: 'reputation-growth', planName: 'Reputation Growth' },
+  price_1TvaJ7AMjM6aPwDaE0EQSOF1: { planId: 'reputation-pro', planName: 'Reputation Pro' },
+  price_1TvaJVAMjM6aPwDa7B8RqY2v: { planId: 'leadgen-starter', planName: 'Lead Generation Starter' },
+  price_1TvaJqAMjM6aPwDa88Nr3SOA: { planId: 'leadgen-growth', planName: 'Lead Generation Growth' },
+  price_1TvaKAAMjM6aPwDadaGsA4od: { planId: 'leadgen-pro', planName: 'Lead Generation Pro' },
+  price_1U0OUBAMjM6aPwDaHQhysKzY: { planId: 'receptionist', planName: 'AI Receptionist' },
+  price_1U0OnoAMjM6aPwDa0kTkYpKj: { planId: 'receptionist-pro', planName: 'AI Receptionist Full System' },
+};
+
+function deliveryTagsFor(planId: string): string[] {
+  if (planId.startsWith('reputation')) return ['review-campaign-active'];
+  if (planId.startsWith('leadgen')) return ['leadgen-client'];
+  if (planId.startsWith('receptionist')) return ['receptionist-client'];
+  return [];
+}
+
 export async function POST(request: NextRequest) {
   const sig = request.headers.get('stripe-signature');
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -23,7 +42,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: err.message }, { status: 400 });
   }
 
-  // Handle the event
   switch (event.type) {
     case 'checkout.session.completed': {
       const session = event.data.object;
@@ -31,21 +49,33 @@ export async function POST(request: NextRequest) {
       const customerEmail = session.customer_details?.email || session.customer_email || '';
       const customerPhone = session.customer_details?.phone || '';
 
-      console.log(`✅ Payment completed: ${metadata.planName} — ${customerEmail}`);
+      // Resolve plan: metadata (site checkout) OR price ID from line items (payment links)
+      let planId = metadata.planId || '';
+      let planName = metadata.planName || '';
+      if (!planId) {
+        try {
+          const full = await stripe.checkout.sessions.retrieve(session.id, { expand: ['line_items'] });
+          const priceId = full.line_items?.data?.[0]?.price?.id || '';
+          const plan = PRICE_TO_PLAN[priceId];
+          if (plan) {
+            planId = plan.planId;
+            planName = plan.planName;
+          } else {
+            planName = full.line_items?.data?.[0]?.description || 'Unknown Plan';
+          }
+        } catch (err) {
+          console.error('Line item lookup failed:', err);
+        }
+      }
 
-      // Create/update contact in GHL
+      console.log(`✅ Payment completed: ${planName || 'unknown'} — ${customerEmail}`);
+
       if (GHL_TOKEN && customerEmail) {
         try {
-          // Bridge: plan → delivery trigger tags so service workflows auto-fire
-          // Reputation plans start the review campaign; Lead Gen plans start client intake
-          const planId = metadata.planId || '';
-          const deliveryTags: string[] = [];
-          if (planId.startsWith('reputation')) {
-            deliveryTags.push('review-campaign-active');
-          } else if (planId.startsWith('leadgen')) {
-            deliveryTags.push('leadgen-client');
-          }
-          console.log(`🎯 Delivery bridge tags for ${planId}: ${deliveryTags.join(', ') || '(none)'}`);
+          const deliveryTags = deliveryTagsFor(planId);
+          // 'client' tag stops the assessment nurture (W3); 'paying-client' is the master flag
+          const tags = ['paying-client', 'client', ...(planId ? [planId] : []), ...deliveryTags];
+          console.log(`🎯 Tags for ${planId}: ${tags.join(', ')}`);
 
           const ghlBody = {
             locationId: GHL_LOCATION,
@@ -54,14 +84,14 @@ export async function POST(request: NextRequest) {
             firstName: (metadata.customerName || '').split(' ')[0] || 'New',
             lastName: (metadata.customerName || '').split(' ').slice(1).join(' ') || 'Customer',
             companyName: metadata.businessName || '',
-            tags: ['paying-client', planId, ...deliveryTags].filter(Boolean),
+            tags,
             customFields: [
-              { key: 'contact.plan', field_value: metadata.planName || '' },
+              { key: 'contact.plan', field_value: planName },
               { key: 'contact.stripe_customer_id', field_value: session.customer || '' },
             ],
           };
 
-          await fetch('https://services.leadconnectorhq.com/contacts/upsert', {
+          const ghlRes = await fetch('https://services.leadconnectorhq.com/contacts/upsert', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${GHL_TOKEN}`,
@@ -70,6 +100,9 @@ export async function POST(request: NextRequest) {
             },
             body: JSON.stringify(ghlBody),
           });
+          if (!ghlRes.ok) {
+            console.error('GHL upsert failed:', ghlRes.status, await ghlRes.text());
+          }
         } catch (err) {
           console.error('GHL contact creation failed:', err);
         }
