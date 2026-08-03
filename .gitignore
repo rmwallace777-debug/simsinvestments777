@@ -49,3 +49,6 @@ next-env.d.ts
 # Docker
 postgres_data/
 .env*.local
+
+# internal wing docs (not for public repo)
+/wiki/
