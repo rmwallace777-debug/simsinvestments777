@@ -129,7 +129,7 @@ export default function HomePage() {
               Everything You Need to <span className="gradient-text">Grow</span>
             </h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-              Two powerful services designed to work together — fill your pipeline and build a reputation that converts.
+              Three powerful services that work together — fill your pipeline, build a reputation that converts, and never miss a call.
             </p>
           </FadeIn>
 
@@ -173,6 +173,72 @@ export default function HomePage() {
               </StaggerItem>
             ))}
           </StaggerContainer>
+        </div>
+      </section>
+
+      {/* AI Receptionist Section */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute top-1/4 right-1/4 w-72 h-72 bg-teal-500/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <FadeIn>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-xs font-medium mb-6">
+                <Zap className="w-3 h-3" />
+                New — AI Receptionist
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+                Never Miss <span className="gradient-text">Another Call</span>
+              </h2>
+              <p className="text-lg text-slate-400 leading-relaxed mb-8 max-w-lg">
+                Our AI receptionist answers every call in seconds — nights, weekends, holidays — books appointments, and sends text confirmations. One flat monthly price.
+              </p>
+              <div className="space-y-3 mb-8">
+                {[
+                  { icon: Bot, text: 'Answers 24/7 — not one call goes to voicemail' },
+                  { icon: Shield, text: 'Books jobs + sends text confirmations automatically' },
+                  { icon: Zap, text: 'No contracts — live the same day' },
+                ].map((item) => (
+                  <div key={item.text} className="flex items-center gap-3">
+                    <item.icon className="w-5 h-5 text-teal-400 flex-shrink-0" />
+                    <span className="text-slate-300">{item.text}</span>
+                  </div>
+                ))}
+              </div>
+              <Link
+                href="/receptionist#demo"
+                className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl hover:from-teal-400 hover:to-teal-500 teal-glow transition-all duration-200"
+              >
+                Hear It Answer YOUR Phone
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </FadeIn>
+
+            <FadeIn delay={0.2} direction="right">
+              <div className="glass-card rounded-2xl p-6">
+                <div className="flex items-center gap-2 mb-6">
+                  <div className="w-3 h-3 rounded-full bg-red-500" />
+                  <div className="w-3 h-3 rounded-full bg-amber-500" />
+                  <div className="w-3 h-3 rounded-full bg-green-500" />
+                  <span className="text-xs text-slate-500 ml-2">AI Receptionist — Live Demo</span>
+                </div>
+                <div className="space-y-4">
+                  {[
+                    { label: 'Answer time', value: '~2 seconds', note: '24/7 — nights, weekends, holidays' },
+                    { label: 'Missed calls', value: '0', note: 'every call answered or booked' },
+                    { label: 'Monthly price', value: '$497', note: 'flat rate — no per-minute fees' },
+                  ].map((stat) => (
+                    <div key={stat.label} className="flex items-center justify-between p-3 bg-navy-800/50 rounded-lg">
+                      <div>
+                        <p className="text-sm text-slate-400">{stat.label}</p>
+                        <p className="text-2xl font-bold text-white">{stat.value}</p>
+                      </div>
+                      <p className="text-xs text-slate-500 max-w-[140px] text-right">{stat.note}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </FadeIn>
+          </div>
         </div>
       </section>
 

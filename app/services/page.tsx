@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/Animations';
-import { ArrowRight, Target, Search, Mail, Phone, MessageSquare, Star, ThumbsUp, TrendingUp, Shield } from 'lucide-react';
+import { ArrowRight, Target, Search, Mail, Phone, MessageSquare, Star, ThumbsUp, TrendingUp, Shield, CalendarCheck, Headset } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Services',
-  description: 'B2B Lead Generation and Google Review Management services for Texas businesses. Data-driven, proven results starting at $297/month.',
+  description: 'B2B Lead Generation, Google Review Management, and 24/7 AI receptionist call answering for Texas businesses. Data-driven, proven results starting at $297/month.',
 };
 
 export default function ServicesPage() {
@@ -18,7 +18,7 @@ export default function ServicesPage() {
             Our <span className="gradient-text">Services</span>
           </h1>
           <p className="text-lg text-slate-400 leading-relaxed">
-            Two powerful services designed to work in tandem. Fill your pipeline with qualified B2B leads while building a reputation that makes closing deals effortless.
+            Three powerful services designed to work together. Fill your pipeline with qualified B2B leads, build a reputation that makes closing deals effortless — and never miss a call.
           </p>
         </FadeIn>
       </section>
@@ -197,6 +197,81 @@ export default function ServicesPage() {
                 Boost Your Reputation
                 <ArrowRight className="w-4 h-4" />
               </Link>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* AI Receptionist Service */}
+      <section id="ai-receptionist" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <FadeIn>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-xs font-medium mb-4">
+              Service 03
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              AI Receptionist — <span className="gradient-text">Never Miss a Call</span>
+            </h2>
+            <p className="text-lg text-slate-400 mb-6 leading-relaxed">
+              Every call that goes to voicemail is a job your competitor gets. Our AI receptionist answers in seconds — 24/7, including nights, weekends, and holidays — books appointments, and sends text confirmations automatically.
+            </p>
+            <div className="space-y-4 mb-8">
+              {[
+                { icon: Phone, title: 'Answers Every Call, 24/7', desc: 'After hours, weekends, holidays — every call is answered in ~2 seconds. Not one lead goes to voicemail.' },
+                { icon: CalendarCheck, title: 'Books & Confirms via SMS', desc: 'Schedules appointments and sends text confirmations and reminders, so nobody falls through the cracks.' },
+                { icon: Headset, title: 'Transfers & Escalates', desc: 'Routes callers to you when available, and pages your on-call person for emergencies. You stay in control.' },
+                { icon: Shield, title: 'No Contracts, Live Today', desc: 'Works with your existing number. No setup fees, no new equipment — live the same day, cancel anytime.' },
+              ].map((item) => (
+                <div key={item.title} className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-teal-500/10 flex items-center justify-center flex-shrink-0">
+                    <item.icon className="w-5 h-5 text-teal-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold mb-1">{item.title}</h3>
+                    <p className="text-sm text-slate-400">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Link
+              href="/receptionist#demo"
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl hover:from-teal-400 hover:to-teal-500 transition-all"
+            >
+              Hear It Answer YOUR Phone
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </FadeIn>
+
+          <FadeIn delay={0.2} direction="right">
+            <div className="glass-card rounded-2xl p-8">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-navy-800/50 rounded-xl">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Answer Time</p>
+                    <p className="text-2xl font-bold text-white">~2 seconds</p>
+                  </div>
+                  <Headset className="w-8 h-8 text-teal-400" />
+                </div>
+                <div className="flex items-center justify-between p-4 bg-navy-800/50 rounded-xl">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Coverage</p>
+                    <p className="text-2xl font-bold text-white">24/7</p>
+                  </div>
+                  <CalendarCheck className="w-8 h-8 text-teal-400" />
+                </div>
+                <div className="flex items-center justify-between p-4 bg-navy-800/50 rounded-xl">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Missed Calls</p>
+                    <p className="text-2xl font-bold text-white">0</p>
+                  </div>
+                  <Phone className="w-8 h-8 text-teal-400" />
+                </div>
+              </div>
+              <div className="mt-6 p-4 bg-teal-500/10 border border-teal-500/20 rounded-xl">
+                <p className="text-sm text-teal-400 font-medium">
+                  Starting at <span className="font-bold">$497/month</span> — no contracts
+                </p>
+              </div>
             </div>
           </FadeIn>
         </div>

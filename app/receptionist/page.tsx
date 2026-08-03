@@ -1,4 +1,5 @@
 import ReceptionistForm from '@/components/ReceptionistForm';
+import CheckoutButton from '@/components/CheckoutButton';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/Animations';
 import { PhoneCall, CalendarCheck, ShieldCheck, Clock, ArrowRight, MessageSquareText, Zap, CheckCircle2, Headset } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -257,12 +258,14 @@ export default function ReceptionistPage() {
                   </li>
                 ))}
               </ul>
-              <a
-                href="#demo"
+              <CheckoutButton
+                planId="receptionist"
                 className="inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl hover:from-teal-400 hover:to-teal-500 teal-glow transition-all duration-200"
               >
-                See a Demo
-                <ArrowRight className="w-4 h-4" />
+                Start Now — $497/mo
+              </CheckoutButton>
+              <a href="#demo" className="block text-center text-sm text-slate-400 hover:text-teal-400 mt-3">
+                or see a live demo first →
               </a>
             </div>
           </StaggerItem>
@@ -290,12 +293,14 @@ export default function ReceptionistPage() {
                   </li>
                 ))}
               </ul>
-              <a
-                href="#demo"
+              <CheckoutButton
+                planId="receptionist-pro"
                 className="inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl hover:from-teal-400 hover:to-teal-500 teal-glow transition-all duration-200"
               >
-                See a Demo
-                <ArrowRight className="w-4 h-4" />
+                Start Now — $997/mo
+              </CheckoutButton>
+              <a href="#demo" className="block text-center text-sm text-slate-400 hover:text-teal-400 mt-3">
+                or see a live demo first →
               </a>
             </div>
           </StaggerItem>
