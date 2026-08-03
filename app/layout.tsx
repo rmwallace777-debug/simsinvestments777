@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ExitIntentPopup from '@/components/ExitIntentPopup';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+import BingTracking from '@/components/BingTracking';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -69,6 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`dark ${inter.variable}`}>
       <body className="min-h-screen bg-background font-sans antialiased">
+        <BingTracking />
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
