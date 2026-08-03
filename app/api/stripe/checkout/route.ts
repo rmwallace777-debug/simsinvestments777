@@ -28,13 +28,13 @@ const PLANS: Record<string, { price_id: string; name: string }> = {
     price_id: 'price_1TvaKAAMjM6aPwDadaGsA4od',
     name: 'Lead Generation Pro',
   },
-  // AI Receptionist plans — replace price_REPLACE_ME_* with real Stripe price IDs
+  // AI Receptionist plans
   'receptionist': {
-    price_id: 'price_REPLACE_ME_497',
+    price_id: 'price_1U0OUBAMjM6aPwDaHQhysKzY',
     name: 'AI Receptionist',
   },
   'receptionist-pro': {
-    price_id: 'price_REPLACE_ME_997',
+    price_id: 'price_1U0OnoAMjM6aPwDa0kTkYpKj',
     name: 'AI Receptionist Full System',
   },
 };
