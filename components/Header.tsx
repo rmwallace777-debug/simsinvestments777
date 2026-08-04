@@ -52,6 +52,12 @@ export default function Header() {
             {/* CTA */}
             <div className="hidden lg:flex items-center gap-3">
               <Link
+                href="/receptionist#demo"
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-teal-400 border border-teal-500/30 rounded-lg hover:bg-teal-500/10 hover:border-teal-400/50 transition-all duration-200"
+              >
+                AI Receptionist Demo
+              </Link>
+              <Link
                 href="/free-audit"
                 className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-teal-500 to-teal-600 rounded-lg hover:from-teal-400 hover:to-teal-500 teal-glow transition-all duration-200"
               >
@@ -92,6 +98,13 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
+              <Link
+                href="/receptionist#demo"
+                onClick={() => setMobileOpen(false)}
+                className="block px-4 py-3 text-sm font-medium text-teal-400 border border-teal-500/30 rounded-lg text-center mt-3"
+              >
+                AI Receptionist Demo
+              </Link>
               <Link
                 href="/free-audit"
                 onClick={() => setMobileOpen(false)}
