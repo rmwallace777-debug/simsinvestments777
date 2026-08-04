@@ -1,13 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Link from 'next/link';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/Animations';
-import { Check, ArrowRight, HelpCircle, Star, TrendingUp, Globe, Search } from 'lucide-react';
+import { Check, ArrowRight, HelpCircle, Star, TrendingUp, Globe, Search, PhoneCall } from 'lucide-react';
 import type { Metadata } from 'next';
 import BuyButton from '@/components/BuyButton';
 
 export const metadata: Metadata = {
   title: 'Pricing',
-  description: 'Simple, transparent pricing for B2B lead generation and reputation management. Plans start at $297/month. No hidden fees, cancel anytime.',
+  description: 'Simple, transparent pricing for AI receptionist, B2B lead generation and reputation management. Plans start at $297/month. No hidden fees, cancel anytime.',
 };
 
 const repPlans = [
@@ -117,6 +117,39 @@ const leadPlans = [
   },
 ];
 
+const receptionistPlans = [
+  {
+    name: 'AI Receptionist',
+    price: '$497',
+    period: '/month',
+    description: 'Answers every call in seconds — 24/7, with your business name. Books jobs while you sleep.',
+    features: [
+      '24/7 call answering in ~2 seconds',
+      'Appointment booking + SMS confirmations',
+      'Call transfer + on-call paging',
+      'Website chat widget',
+      'Daily call summary to your inbox',
+    ],
+    cta: 'Start Now',
+    popular: false,
+  },
+  {
+    name: 'Full System',
+    price: '$997',
+    period: '/month',
+    description: 'Everything in AI Receptionist plus analytics and automatic review follow-up. Our flagship.',
+    features: [
+      'Everything in AI Receptionist',
+      'Call analytics dashboard & recordings',
+      'Automatic review requests after jobs',
+      'AI responses to Google reviews',
+      'Priority setup — live same day',
+    ],
+    cta: 'Go Full System',
+    popular: true,
+  },
+];
+
 const faqs = [
   {
     q: 'Can I cancel anytime?',
@@ -154,7 +187,7 @@ export default function PricingPage() {
             Simple, Transparent <span className="gradient-text">Pricing</span>
           </h1>
           <p className="text-lg text-slate-400 leading-relaxed">
-            Two services. One goal: growing your business. Pick the service that fits your needs, or combine both for maximum impact.
+            Three services. One goal: growing your business. Pick the service that fits your needs, or combine them for maximum impact.
           </p>
         </FadeIn>
       </section>
@@ -177,6 +210,13 @@ export default function PricingPage() {
               >
                 <TrendingUp className="w-4 h-4 mr-2 inline-block" />
                 B2B Lead Generation
+              </TabsTrigger>
+              <TabsTrigger
+                value="receptionist"
+                className="px-6 py-2.5 text-sm font-medium rounded-lg data-[state=active]:bg-sky-500/20 data-[state=active]:text-sky-400 data-[state=inactive]:text-slate-400 transition-all"
+              >
+                <PhoneCall className="w-4 h-4 mr-2 inline-block" />
+                AI Receptionist
               </TabsTrigger>
             </TabsList>
           </div>
@@ -249,6 +289,46 @@ export default function PricingPage() {
                       label={plan.cta}
                       popular={plan.popular}
                     />
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </TabsContent>
+
+          <TabsContent value="receptionist">
+            <StaggerContainer className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {receptionistPlans.map((plan) => (
+                <StaggerItem key={plan.name}>
+                  <div className={`glass-card rounded-2xl p-8 relative h-full ${plan.popular ? 'border-sky-500/40 sky-glow' : ''}`}>
+                    {plan.popular && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-sky-500 to-sky-600 rounded-full text-xs font-semibold text-white">
+                        Most Popular
+                      </div>
+                    )}
+                    <div className="mb-6">
+                      <h3 className="text-xl font-bold text-white mb-1">{plan.name}</h3>
+                      <p className="text-sm text-slate-400 mb-4">{plan.description}</p>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-4xl font-bold text-white">{plan.price}</span>
+                        <span className="text-slate-500">{plan.period}</span>
+                      </div>
+                    </div>
+                    <ul className="space-y-3 mb-8">
+                      {plan.features.map((f) => (
+                        <li key={f} className="flex items-start gap-3 text-sm">
+                          <Check className="w-4 h-4 text-sky-400 mt-0.5 flex-shrink-0" />
+                          <span className="text-slate-300">{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <BuyButton
+                      planId={plan.name === 'Full System' ? 'receptionist-pro' : 'receptionist'}
+                      label={plan.cta}
+                      popular={plan.popular}
+                    />
+                    <a href="/receptionist#demo" className="block text-center text-sm text-slate-400 hover:text-sky-400 mt-3">
+                      or see a live demo first →
+                    </a>
                   </div>
                 </StaggerItem>
               ))}
