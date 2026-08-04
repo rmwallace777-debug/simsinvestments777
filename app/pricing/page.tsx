@@ -1,13 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Link from 'next/link';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/Animations';
-import { Check, ArrowRight, HelpCircle, Star, TrendingUp, Globe, Search, PhoneCall } from 'lucide-react';
+import { Check, ArrowRight, HelpCircle, Star, TrendingUp, Globe, Search, PhoneCall, MonitorSmartphone } from 'lucide-react';
 import type { Metadata } from 'next';
 import BuyButton from '@/components/BuyButton';
 
 export const metadata: Metadata = {
   title: 'Pricing',
-  description: 'Simple, transparent pricing for AI receptionist, B2B lead generation and reputation management. Plans start at $297/month. No hidden fees, cancel anytime.',
+  description: 'Simple, transparent pricing for AI receptionist, website design, B2B lead generation and reputation management. Plans start at $297/month. No hidden fees, cancel anytime.',
 };
 
 const repPlans = [
@@ -150,6 +150,41 @@ const receptionistPlans = [
   },
 ];
 
+const websitePlans = [
+  {
+    name: 'Website Build',
+    price: '$1,250',
+    period: 'one-time + $119/mo',
+    description: 'A professional 5-page website for your business, built and live in one day.',
+    features: [
+      '5-page website (home, services, about, contact, reviews)',
+      'Mobile-friendly, fast, Google-ready',
+      'Built in the GHL website builder — no clunky page builders',
+      'Your domain, business info, and photos',
+      'Live in 24 hours — we do the work',
+      'Free 30-day tweaks included',
+    ],
+    cta: 'Build My Website',
+    popular: true,
+  },
+  {
+    name: 'Website + Care',
+    price: '$1,250',
+    period: 'one-time + $149/mo',
+    description: 'Website build plus ongoing care: hosting, updates, and monthly improvements.',
+    features: [
+      'Everything in Website Build',
+      'Hosting, security, and backups included',
+      'Monthly content updates & photo swaps',
+      'Google Business Profile sync',
+      'Monthly performance report',
+      'Priority support — same-day responses',
+    ],
+    cta: 'Build + Care',
+    popular: false,
+  },
+];
+
 const faqs = [
   {
     q: 'Can I cancel anytime?',
@@ -217,6 +252,13 @@ export default function PricingPage() {
               >
                 <PhoneCall className="w-4 h-4 mr-2 inline-block" />
                 AI Receptionist
+              </TabsTrigger>
+              <TabsTrigger
+                value="website"
+                className="px-6 py-2.5 text-sm font-medium rounded-lg data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400 data-[state=inactive]:text-slate-400 transition-all"
+              >
+                <MonitorSmartphone className="w-4 h-4 mr-2 inline-block" />
+                Website Build
               </TabsTrigger>
             </TabsList>
           </div>
@@ -329,6 +371,46 @@ export default function PricingPage() {
                     <a href="/receptionist#demo" className="block text-center text-sm text-slate-400 hover:text-sky-400 mt-3">
                       or see a live demo first →
                     </a>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </TabsContent>
+
+          <TabsContent value="website">
+            <StaggerContainer className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {websitePlans.map((plan) => (
+                <StaggerItem key={plan.name}>
+                  <div className={`glass-card rounded-2xl p-8 relative h-full ${plan.popular ? 'border-emerald-500/40 emerald-glow' : ''}`}>
+                    {plan.popular && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full text-xs font-semibold text-white">
+                        Most Popular
+                      </div>
+                    )}
+                    <div className="mb-6">
+                      <h3 className="text-xl font-bold text-white mb-1">{plan.name}</h3>
+                      <p className="text-sm text-slate-400 mb-4">{plan.description}</p>
+                      <div className="flex items-baseline gap-1 flex-wrap">
+                        <span className="text-4xl font-bold text-white">{plan.price}</span>
+                        <span className="text-slate-500 text-sm">{plan.period}</span>
+                      </div>
+                    </div>
+                    <ul className="space-y-3 mb-8">
+                      {plan.features.map((f) => (
+                        <li key={f} className="flex items-start gap-3 text-sm">
+                          <Check className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span className="text-slate-300">{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <BuyButton
+                      planId={plan.name === 'Website + Care' ? 'website-care' : 'website-build'}
+                      label={plan.cta}
+                      popular={plan.popular}
+                    />
+                    <p className="text-center text-xs text-slate-500 mt-3">
+                      No website right now? Most of our clients don't have one — that's the gap we fill.
+                    </p>
                   </div>
                 </StaggerItem>
               ))}

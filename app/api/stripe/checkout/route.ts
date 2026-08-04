@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // Plan IDs mapping — Robert creates these in Stripe Dashboard
-const PLANS: Record<string, { price_id: string; name: string }> = {
+const PLANS: Record<string, { price_id: string; name: string; mode?: 'payment' | 'subscription' }> = {
   'reputation-starter': {
     price_id: 'price_1TvaI6AMjM6aPwDaP6kHqCy4',
     name: 'Reputation Starter',
@@ -37,7 +37,21 @@ const PLANS: Record<string, { price_id: string; name: string }> = {
     price_id: 'price_1U0OnoAMjM6aPwDa0kTkYpKj',
     name: 'AI Receptionist Full System',
   },
+  // Website Build / Care (Site-in-a-Day)
+  'website-build': {
+    price_id: 'price_TODO_WEBSITE_BUILD',
+    name: 'Website Build (Site-in-a-Day)',
+    mode: 'payment',
+  },
+  'website-care': {
+    price_id: 'price_TODO_WEBSITE_CARE',
+    name: 'Website Care & Hosting',
+    mode: 'subscription',
+  },
 };
+
+// default mode for legacy plans (all subscriptions)
+const DEFAULT_MODE = 'subscription';
 
 export async function POST(request: NextRequest) {
   try {
@@ -50,10 +64,11 @@ export async function POST(request: NextRequest) {
 
     const plan = PLANS[planId];
     const origin = request.headers.get('origin') || 'https://simsinvestments777.com';
+    const mode = plan.mode || DEFAULT_MODE;
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
-      mode: 'subscription',
+      mode,
       payment_method_types: ['card'],
       line_items: [
         {

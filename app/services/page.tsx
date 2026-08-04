@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/Animations';
-import { ArrowRight, Target, Search, Mail, Phone, MessageSquare, Star, ThumbsUp, TrendingUp, Shield, CalendarCheck, Headset } from 'lucide-react';
+import { ArrowRight, Target, Search, Mail, Phone, MessageSquare, Star, ThumbsUp, TrendingUp, Shield, CalendarCheck, Headset, MonitorSmartphone, Globe } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export default function ServicesPage() {
             Our <span className="gradient-text">Services</span>
           </h1>
           <p className="text-lg text-slate-400 leading-relaxed">
-            Three powerful services designed to work together. Fill your pipeline with qualified B2B leads, build a reputation that makes closing deals effortless — and never miss a call.
+            Four powerful services designed to work together. Fill your pipeline with qualified B2B leads, build a reputation that makes closing deals effortless — never miss a call, and get a website that works while you sleep.
           </p>
         </FadeIn>
       </section>
@@ -270,6 +270,83 @@ export default function ServicesPage() {
               <div className="mt-6 p-4 bg-teal-500/10 border border-teal-500/20 rounded-xl">
                 <p className="text-sm text-teal-400 font-medium">
                   Starting at <span className="font-bold">$497/month</span> — no contracts
+                </p>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* Website Build Service */}
+      <section id="website-build" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <FadeIn>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium mb-4">
+              Service 04
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              Website Build — Live in a Day
+            </h2>
+            <p className="text-lg text-slate-400 mb-6 leading-relaxed">
+              Most local service businesses don't have a website — and Google sends those customers
+              to whoever does. We build you a professional 5-page website in 24 hours, with ongoing
+              care so it stays fast, fresh, and found.
+            </p>
+            <div className="space-y-4 mb-8">
+              {[
+                { icon: MonitorSmartphone, title: 'Built in a Day', desc: '5-page site (home, services, about, contact, reviews) designed and launched in 24 hours.' },
+                { icon: Search, title: 'Google-Ready', desc: 'Mobile-friendly, fast-loading, and structured so local customers can find you.' },
+                { icon: Globe, title: 'Your Domain, Your Brand', desc: 'Custom domain, your business info, photos, and a look that matches your reputation.' },
+                { icon: Shield, title: 'Ongoing Care', desc: 'Hosting, security, updates, and monthly improvements — we handle it all.' },
+              ].map((item) => (
+                <div key={item.title} className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                    <item.icon className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold mb-1">{item.title}</h3>
+                    <p className="text-sm text-slate-400">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-xl hover:from-emerald-400 hover:to-emerald-500 transition-all"
+            >
+              See Website Pricing
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </FadeIn>
+
+          <FadeIn delay={0.2} direction="right">
+            <div className="glass-card rounded-2xl p-8">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-navy-800/50 rounded-xl">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Build Time</p>
+                    <p className="text-2xl font-bold text-white">24 hours</p>
+                  </div>
+                  <MonitorSmartphone className="w-8 h-8 text-emerald-400" />
+                </div>
+                <div className="flex items-center justify-between p-4 bg-navy-800/50 rounded-xl">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Pages Included</p>
+                    <p className="text-2xl font-bold text-white">5</p>
+                  </div>
+                  <Globe className="w-8 h-8 text-emerald-400" />
+                </div>
+                <div className="flex items-center justify-between p-4 bg-navy-800/50 rounded-xl">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">Care & Hosting</p>
+                    <p className="text-2xl font-bold text-white">Included</p>
+                  </div>
+                  <Shield className="w-8 h-8 text-emerald-400" />
+                </div>
+              </div>
+              <div className="mt-6 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                <p className="text-sm text-emerald-400 font-medium">
+                  Starting at <span className="font-bold">$1,250</span> one-time + <span className="font-bold">$119/month</span>
                 </p>
               </div>
             </div>

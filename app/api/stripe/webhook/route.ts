@@ -16,12 +16,15 @@ const PRICE_TO_PLAN: Record<string, { planId: string; planName: string }> = {
   price_1TvaKAAMjM6aPwDadaGsA4od: { planId: 'leadgen-pro', planName: 'Lead Generation Pro' },
   price_1U0OUBAMjM6aPwDaHQhysKzY: { planId: 'receptionist', planName: 'AI Receptionist' },
   price_1U0OnoAMjM6aPwDa0kTkYpKj: { planId: 'receptionist-pro', planName: 'AI Receptionist Full System' },
+  price_TODO_WEBSITE_BUILD: { planId: 'website-build', planName: 'Website Build (Site-in-a-Day)' },
+  price_TODO_WEBSITE_CARE: { planId: 'website-care', planName: 'Website Care & Hosting' },
 };
 
 function deliveryTagsFor(planId: string): string[] {
   if (planId.startsWith('reputation')) return ['review-campaign-active'];
   if (planId.startsWith('leadgen')) return ['leadgen-client'];
   if (planId.startsWith('receptionist')) return ['receptionist-client'];
+  if (planId.startsWith('website')) return ['website-client'];
   return [];
 }
 
