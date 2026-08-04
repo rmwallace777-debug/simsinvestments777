@@ -81,7 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               name: 'Sims Investment Management Services, LLC',
               description: 'B2B Lead Generation and Google Review Management services for Texas businesses.',
               url: siteUrl,
-              telephone: '+19034445555',
+              telephone: '+19033006514',
               email: 'robert@simsinvestments777.com',
               address: {
                 '@type': 'PostalAddress',
@@ -116,7 +116,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               logo: `${siteUrl}/logo.png`,
               contactPoint: {
                 '@type': 'ContactPoint',
-                telephone: '+19034445555',
+                telephone: '+19033006514',
                 contactType: 'sales',
                 email: 'robert@simsinvestments777.com',
                 availableLanguage: ['English'],
