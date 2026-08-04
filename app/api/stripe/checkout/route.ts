@@ -39,12 +39,12 @@ const PLANS: Record<string, { price_id: string; name: string; mode?: 'payment' |
   },
   // Website Build / Care (Site-in-a-Day)
   'website-build': {
-    price_id: 'price_TODO_WEBSITE_BUILD',
+    price_id: 'price_1U0ofsAMjM6aPwDa9Ids4IFF',
     name: 'Website Build (Site-in-a-Day)',
     mode: 'payment',
   },
   'website-care': {
-    price_id: 'price_TODO_WEBSITE_CARE',
+    price_id: 'price_1U0ofsAMjM6aPwDa2PJM0HBD',
     name: 'Website Care & Hosting',
     mode: 'subscription',
   },

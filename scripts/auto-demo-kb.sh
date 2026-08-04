@@ -1,10 +1,13 @@
 #!/bin/bash
-# auto-demo-kb.sh — generate AI receptionist demo KBs for day-2 SMS batch (DemoDrop-style)
-# Input: /tmp/day2.csv (name|phone|id) — output: KB md per business in wiki/business/demos/
-# Rate-limit safe: sequential with 20s sleeps (firecrawl 429s after ~4 quick calls)
+# auto-demo-kb.sh v2 — generate AI receptionist demo KBs (DemoDrop-style)
+# v2: name+phone search query, extract services from title+description+content,
+#     broader keyword list, always overwrite (self-healing)
+# Input: /tmp/day2.csv (name|phone|id) — Output: KB md per business
 
 OUT=/home/ubuntu/winged_agents/wiki/business/demos
 mkdir -p "$OUT"
+
+SERVICES_RE='heating|air conditioning|hvac|ac repair|air-conditioning|\bplumbing\b|electrical|roofing|furnace|installation|maintenance|duct|refrigeration|boiler|heat pump|water heater|ventilation|sheet metal|\bcooling\b|repair|compressor|geothermal|mini-split|indoor air quality|\bgas\b'
 
 while IFS='|' read -r name phone id; do
   [ -z "$name" ] && continue
@@ -12,22 +15,18 @@ while IFS='|' read -r name phone id; do
   [ -z "$slug" ] && slug="contact-${id}"
   file="$OUT/${slug}-ai-receptionist-demo.md"
 
-  if [ -f "$file" ]; then
-    echo "SKIP (exists): $name"
-    continue
-  fi
-
   echo "=== $name ($phone) ==="
-  firecrawl search "$name HVAC services" --scrape --limit 1 -o "/tmp/kb-${slug}.json" --json >/dev/null 2>&1
+  firecrawl search "$name $phone" --scrape --limit 1 -o "/tmp/kb-${slug}.json" --json >/dev/null 2>&1
 
-  services=$(jq -r '.data.web[0].content // empty' "/tmp/kb-${slug}.json" 2>/dev/null | head -c 4000 | grep -oiE 'heating|air conditioning|hvac|plumbing|electrical|roofing|furnace|ac repair|installation|maintenance|duct|refrigeration|boiler|heat pump|repair|service' | tr '[:upper:]' '[:lower:]' | sort -u | sed 's/^/- /' | head -12)
+  combined=$(jq -r '[.data.web[0].title // "", .data.web[0].description // "", (.data.web[0].content // "" | .[0:4000])] | join(" ")' "/tmp/kb-${slug}.json" 2>/dev/null)
+  services=$(echo "$combined" | grep -oiE "$SERVICES_RE" | tr '[:upper:]' '[:lower:]' | sort -u | sed 's/^/- /' | head -14)
 
   {
     echo "# ${name^} — AI Receptionist Demo Knowledge Base"
     echo
     echo "**Status:** GENERATED AUTOMATICALLY 8/3 — refine on demo call"
     echo "**Phone:** $phone"
-    echo "**Source:** firecrawl search+scrape (auto-pipeline, batch 2)"
+    echo "**Source:** firecrawl search+scrape (auto-pipeline v2)"
     echo
     echo "## Demo Angle"
     echo "After-hours call capture for a Texas home-service business."
