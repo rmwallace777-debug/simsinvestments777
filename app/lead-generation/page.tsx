@@ -5,7 +5,7 @@ import { Check, TrendingUp, Phone, Target, Search, Globe, BarChart3, Zap, ArrowR
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Lead Generation for Contractors & Local Businesses | Sims Investment Management',
+  title: 'Lead Generation for Contractors & Local Businesses',
   description: 'Done-for-you lead generation for HVAC, plumbing, and service businesses. AI receptionist answers 24/7, Google review generation, and local search domination. Plans from $297/month.',
 };
 
