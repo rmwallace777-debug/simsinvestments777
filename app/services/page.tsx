@@ -76,7 +76,7 @@ export default function ServicesPage() {
               ))}
             </div>
             <Link
-              href="/free-audit"
+              href="/lead-generation"
               className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl hover:from-teal-400 hover:to-teal-500 transition-all"
             >
               Start Generating Leads
