@@ -43,11 +43,62 @@ export default async function BlogPostPage({ params }: Props) {
 
   // Simple MDX rendering - convert markdown to basic HTML
   function renderContent(content: string): string {
+    const blocks: string[] = [];
+
+    // Inline formatting helper (code → bold → italic → links)
+    const inline = (md: string) =>
+      md
+        .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-white/[0.06] text-teal-300 text-xs">$1</code>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" class="text-teal-400 underline">$1</a>');
+
     let html = content
+      // Extract GFM tables into HTML (rendered after the paragraph pass)
+      .replace(/^\|.+\|\s*\n\|[\s:|-]+\|\s*\n(?:\|.+\|\s*\n?)+/gm, (match) => {
+        const lines = match.trim().split('\n');
+        const parseRow = (line: string) =>
+          line.trim().replace(/^\||\|$/g, '').split('|').map((c) => c.trim());
+        const header = parseRow(lines[0]);
+        const rows = lines.slice(2).map(parseRow);
+        const ths = header.map((c) => `<th class="px-4 py-2 text-left text-white font-semibold whitespace-nowrap">${inline(c)}</th>`).join('');
+        const trs = rows
+          .map((r) => `<tr class="border-b border-white/[0.06]">${r.map((c) => `<td class="px-4 py-2 text-slate-300">${inline(c)}</td>`).join('')}</tr>`)
+          .join('');
+        const id = blocks.length;
+        blocks.push(`<div class="overflow-x-auto my-6"><table class="w-full text-sm glass-card rounded-xl overflow-hidden"><thead><tr class="border-b border-white/[0.1]">${ths}</tr></thead><tbody>${trs}</tbody></table></div>`);
+        return `@@BLOCK${id}@@`;
+      })
+      // Extract blockquotes into HTML
+      .replace(/^>.*(?:\n>.*)*/gm, (match) => {
+        const id = blocks.length;
+        const inner = match
+          .split('\n')
+          .map((l) => l.replace(/^>\s?/, '').trim())
+          .filter(Boolean)
+          .map(inline)
+          .join(' ');
+        blocks.push(`<blockquote class="border-l-4 border-teal-500/60 pl-4 my-6 text-slate-300 italic">${inner}</blockquote>`);
+        return `@@BLOCK${id}@@`;
+      })
+      // Extract ordered lists into HTML
+      .replace(/(?:^\d+\. .*(?:\n|$))+/gm, (match) => {
+        const id = blocks.length;
+        const lis = match
+          .trim()
+          .split('\n')
+          .map((l) => l.replace(/^\d+\.\s*/, ''))
+          .map((l) => `<li class="text-slate-300 mb-1">${inline(l)}</li>`)
+          .join('');
+        blocks.push(`<ol class="list-decimal list-inside my-6 space-y-1">${lis}</ol>`);
+        return `@@BLOCK${id}@@`;
+      })
       // Headers
       .replace(/^### (.+)$/gm, '<h3>$1</h3>')
       .replace(/^## (.+)$/gm, '<h2>$1</h2>')
       .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+      // Inline code
+      .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-white/[0.06] text-teal-300 text-xs">$1</code>')
       // Bold
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       // Italic
@@ -67,7 +118,13 @@ export default async function BlogPostPage({ params }: Props) {
     // Wrap consecutive <li> in <ul>
     html = html.replace(/((?:<li>.*?<\/li>\n?)+)/g, '<ul>$1</ul>');
 
-    return `<p>${html}</p>`;
+    // Restore extracted blocks OUTSIDE paragraph tags
+    let out = `<p>${html}</p>`;
+    out = out.replace(/<p>(@@BLOCK\d+@@)<\/p>/g, '$1');
+    for (let i = 0; i < blocks.length; i++) {
+      out = out.split(`@@BLOCK${i}@@`).join(blocks[i]);
+    }
+    return out;
   }
 
   return (
