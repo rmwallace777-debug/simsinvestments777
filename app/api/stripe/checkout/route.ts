@@ -3,7 +3,14 @@ import { NextRequest, NextResponse } from 'next/server';
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // Plan IDs mapping — Robert creates these in Stripe Dashboard
-const PLANS: Record<string, { price_id: string; name: string; mode?: 'payment' | 'subscription' }> = {
+interface PlanConfig {
+  price_id: string;
+  name: string;
+  mode?: 'payment' | 'subscription';
+  extra_items?: { price_id: string }[];
+}
+
+const PLANS: Record<string, PlanConfig> = {
   'reputation-starter': {
     price_id: 'price_1TvaI6AMjM6aPwDaP6kHqCy4',
     name: 'Reputation Starter',
@@ -45,8 +52,10 @@ const PLANS: Record<string, { price_id: string; name: string; mode?: 'payment' |
   },
   'website-care': {
     price_id: 'price_1U0ofsAMjM6aPwDa2PJM0HBD',
-    name: 'Website Care & Hosting',
+    name: 'Website Build + Care',
     mode: 'subscription',
+    // Charge the $1,250 one-time build AND the $119/mo care in one session
+    extra_items: [{ price_id: 'price_1U0ofsAMjM6aPwDa9Ids4IFF' }],
   },
 };
 
@@ -66,16 +75,17 @@ export async function POST(request: NextRequest) {
     const origin = request.headers.get('origin') || 'https://simsinvestments777.com';
     const mode = plan.mode || DEFAULT_MODE;
 
+    // One line item per price: base + any extra (e.g. website-care bundles the one-time build)
+    const line_items = [{ price: plan.price_id, quantity: 1 }];
+    for (const extra of plan.extra_items || []) {
+      line_items.push({ price: extra.price_id, quantity: 1 });
+    }
+
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       mode,
       payment_method_types: ['card'],
-      line_items: [
-        {
-          price: plan.price_id,
-          quantity: 1,
-        },
-      ],
+      line_items,
       customer_email: customerEmail,
       phone_number_collection: { enabled: true },
       metadata: {
@@ -87,7 +97,9 @@ export async function POST(request: NextRequest) {
       success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: planId.startsWith('receptionist')
         ? `${origin}/receptionist#pricing`
-        : `${origin}/reputation-pricing?cancelled=true`,
+        : planId.startsWith('website')
+          ? `${origin}/pricing?cancelled=true`
+          : `${origin}/reputation-pricing?cancelled=true`,
     });
 
     return NextResponse.json({ url: session.url });
