@@ -7,9 +7,17 @@ interface BuyButtonProps {
   planId: string;
   label: string;
   popular?: boolean;
+  color?: 'amber' | 'emerald' | 'teal' | 'sky';
 }
 
-export default function BuyButton({ planId, label, popular }: BuyButtonProps) {
+const BUTTON_COLORS: Record<string, string> = {
+  amber: 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-400 hover:to-amber-500',
+  emerald: 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-400 hover:to-emerald-500',
+  teal: 'bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:from-teal-400 hover:to-teal-500',
+  sky: 'bg-gradient-to-r from-sky-500 to-sky-600 text-white hover:from-sky-400 hover:to-sky-500',
+};
+
+export default function BuyButton({ planId, label, popular, color }: BuyButtonProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -33,9 +41,11 @@ export default function BuyButton({ planId, label, popular }: BuyButtonProps) {
     setLoading(false);
   };
 
-  const baseClass = popular
-    ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-400 hover:to-amber-500'
-    : 'border border-white/[0.1] text-slate-300 hover:bg-white/[0.05]';
+  const baseClass = color
+    ? BUTTON_COLORS[color]
+    : popular
+      ? BUTTON_COLORS.amber
+      : 'border border-white/[0.1] text-slate-300 hover:bg-white/[0.05]';
 
   return (
     <button

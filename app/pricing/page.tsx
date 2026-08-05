@@ -159,7 +159,7 @@ const websitePlans = [
     features: [
       '5-page website (home, services, about, contact, reviews)',
       'Mobile-friendly, fast, Google-ready',
-      'Built in the GHL website builder — no clunky page builders',
+      'Hand-built by our team — no DIY page builders or templates',
       'Your domain, business info, and photos',
       'Live in 24 hours — we do the work',
       'Free 30-day tweaks included',
@@ -407,6 +407,7 @@ export default function PricingPage() {
                       planId={plan.name === 'Website + Care' ? 'website-care' : 'website-build'}
                       label={plan.cta}
                       popular={plan.popular}
+                      color="emerald"
                     />
                     <p className="text-center text-xs text-slate-500 mt-3">
                       No website right now? Most of our clients don't have one — that's the gap we fill.
