@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/Animations';
-import { ArrowRight, Target, Search, Mail, Phone, MessageSquare, Star, ThumbsUp, TrendingUp, Shield, CalendarCheck, Headset, MonitorSmartphone, Globe } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ArrowRight, Target, Search, Mail, Phone, MessageSquare, Star, ThumbsUp, TrendingUp, Shield, CalendarCheck, Headset, MonitorSmartphone, Globe, PhoneCall } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -22,6 +23,26 @@ export default function ServicesPage() {
           </p>
         </FadeIn>
       </section>
+
+      <Tabs defaultValue="leadgen" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-center mb-16 sticky top-20 z-30">
+          <TabsList className="bg-white/[0.04] border border-white/[0.06] p-1 rounded-xl">
+            <TabsTrigger value="leadgen" className="px-5 py-2.5 text-sm font-medium rounded-lg data-[state=active]:bg-teal-500/20 data-[state=active]:text-teal-400 data-[state=inactive]:text-slate-400 transition-all">
+              <Target className="w-4 h-4 mr-2 inline-block" /> B2B Lead Generation
+            </TabsTrigger>
+            <TabsTrigger value="reputation" className="px-5 py-2.5 text-sm font-medium rounded-lg data-[state=active]:bg-amber-500/20 data-[state=active]:text-amber-400 data-[state=inactive]:text-slate-400 transition-all">
+              <Star className="w-4 h-4 mr-2 inline-block" /> Review Management
+            </TabsTrigger>
+            <TabsTrigger value="receptionist" className="px-5 py-2.5 text-sm font-medium rounded-lg data-[state=active]:bg-sky-500/20 data-[state=active]:text-sky-400 data-[state=inactive]:text-slate-400 transition-all">
+              <PhoneCall className="w-4 h-4 mr-2 inline-block" /> AI Receptionist
+            </TabsTrigger>
+            <TabsTrigger value="website" className="px-5 py-2.5 text-sm font-medium rounded-lg data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400 data-[state=inactive]:text-slate-400 transition-all">
+              <MonitorSmartphone className="w-4 h-4 mr-2 inline-block" /> Website Build
+            </TabsTrigger>
+          </TabsList>
+        </div>
+
+        <TabsContent value="leadgen">
 
       {/* Lead Generation Service */}
       <section id="lead-generation" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
@@ -125,6 +146,10 @@ export default function ServicesPage() {
         </div>
       </section>
 
+        </TabsContent>
+
+        <TabsContent value="reputation">
+
       {/* Review Management Service */}
       <section id="review-management" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -202,6 +227,10 @@ export default function ServicesPage() {
         </div>
       </section>
 
+        </TabsContent>
+
+        <TabsContent value="receptionist">
+
       {/* AI Receptionist Service */}
       <section id="ai-receptionist" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -276,6 +305,10 @@ export default function ServicesPage() {
           </FadeIn>
         </div>
       </section>
+
+        </TabsContent>
+
+        <TabsContent value="website">
 
       {/* Website Build Service */}
       <section id="website-build" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
@@ -353,6 +386,9 @@ export default function ServicesPage() {
           </FadeIn>
         </div>
       </section>
+
+        </TabsContent>
+      </Tabs>
 
       {/* Fix Guide Link */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
