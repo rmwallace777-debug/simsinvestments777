@@ -154,8 +154,8 @@ const websitePlans = [
   {
     name: 'Website Build',
     price: '$1,250',
-    period: 'one-time + $119/mo',
-    description: 'A professional 5-page website for your business, built and live in one day.',
+    period: 'one-time',
+    description: 'A professional 5-page website for your business, built and live in 24 hours. Care & hosting available separately.',
     features: [
       '5-page website (home, services, about, contact, reviews)',
       'Mobile-friendly, fast, Google-ready',
@@ -169,9 +169,9 @@ const websitePlans = [
   },
   {
     name: 'Website + Care',
-    price: '$1,250',
-    period: 'one-time + $149/mo',
-    description: 'Website build plus ongoing care: hosting, updates, and monthly improvements.',
+    price: '$1,250 + $119/mo',
+    period: 'one-time + monthly',
+    description: 'Website build plus ongoing care: hosting, security, updates, and monthly improvements.',
     features: [
       'Everything in Website Build',
       'Hosting, security, and backups included',
